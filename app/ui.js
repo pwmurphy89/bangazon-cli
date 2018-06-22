@@ -8,6 +8,7 @@ const path = require('path');
 
 const { setActiveUser, getActiveUser } = require("./activeUser");
 const {userRegisterView, userLoginView} = require("./views/usersView")
+const {employeeLoginView} = require("./views/employeesView")
 prompt.message = colors.blue("Bangazon Corp");
 
 
@@ -90,7 +91,7 @@ const welcomeMenuHandler = (error, userInput) => {
       })
       break;
     case "3":
-      employeeView()
+      employeeLoginView()
       .then( (employee) => {
         setActiveUser(employee);
         employeeMenu();

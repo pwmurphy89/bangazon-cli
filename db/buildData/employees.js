@@ -5,9 +5,13 @@ module.exports.buildEmployees = function(){
     let employees = [];
     for(let i=0;i<numEmployees;i++){
         employees.push({
-            departmentId: Math.floor(Math.random() * numDepartments) + 1,
+            departmentId: faker.random.number({
+                'min': 1,
+                'max': numDepartments
+            }),
             firstName: faker.name.firstName(),
-            lastName: faker.name.lastName()
+            lastName: faker.name.lastName(),
+            password: "password"
         })
     }
     return employees

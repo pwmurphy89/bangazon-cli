@@ -6,7 +6,10 @@ module.exports.buildDepartments = function(){
     for(let i=0;i<numDepartments;i++){
        departments.push({
            name: faker.name.jobArea(),
-           supervisor: Math.floor(Math.random() * numEmployees) +1,
+           supervisor: faker.random.number({
+                'min': 1,
+                'max': numEmployees
+            }),
            budget: faker.commerce.price() * 10
        })
     }

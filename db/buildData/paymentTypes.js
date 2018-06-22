@@ -5,7 +5,10 @@ module.exports.buildPaymentTypes = function(){
     let paymentTypes = [];
     for(let i=0;i<numPaymentTypes;i++){
        paymentTypes.push({
-           customerId: faker.random.number(numUsers),
+           userId: faker.random.number({
+                'min': 1,
+                'max': numUsers
+            }),
            type: faker.finance.accountName(),
            accountNumber: faker.finance.account(),
        })

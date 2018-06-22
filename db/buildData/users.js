@@ -11,6 +11,5 @@ module.exports.buildUsers = function(){
            password: "password"
        })
     }
-    console.log("show up in terminal", users)
     return users
 }

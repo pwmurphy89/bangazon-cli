@@ -13,7 +13,10 @@ module.exports.buildTrainingPrograms = function(){
             title: faker.company.bs(),
             startDate: startDate,
             endDate: endDate,
-            maxAttendees: faker.random.number(25)
+            maxAttendees: faker.random.number({
+                'min': 5,
+                'max': 25
+            })
         })
     }
     return trainingPrograms
