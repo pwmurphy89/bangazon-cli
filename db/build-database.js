@@ -1,8 +1,9 @@
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 const db = new sqlite3.Database(path.join(__dirname, '..', 'bangazon.sqlite'));
-db.run('PRAGMA foreign_keys = ON');
-
+//for some reason having this ruins everything
+//but i think i'll need it if when i start posting....
+// db.run('PRAGMA foreign_keys = ON');
 
 // const sqlite3 = require('sqlite3').verbose();
 // const path = require('path');
@@ -33,17 +34,19 @@ const products = buildProducts()
 
 db.serialize(function () {
 
+
     db.run(`DROP TABLE IF EXISTS departments`)
     db.run(`CREATE TABLE IF NOT EXISTS departments (
         departmentId INTEGER PRIMARY KEY,
         name TEXT NOT NULL,
         supervisor INTEGER NOT NULL,
-        budget INT NOT NULL)`
+        budget INTEGER NOT NULL)`
     )
     departments.forEach(({ name, supervisor, budget }) => {
         db.run(`INSERT INTO departments (name, supervisor, budget)
                   VALUES ("${name}", ${supervisor}, ${budget})`);
         });
+        console.log(departments)
 
     db.run(`DROP TABLE IF EXISTS employees`)
     db.run(`CREATE TABLE IF NOT EXISTS employees (
@@ -81,7 +84,7 @@ db.serialize(function () {
         title TEXT NOT NULL,
         startDate TEXT NOT NULL,
         endDate TEXT NOT NULL,
-        maxAttendees INT NOT NULL)`
+        maxAttendees INTEGER NOT NULL)`
     )
     trainingPrograms.forEach(({ title, startDate, endDate, maxAttendees}) => {
         db.run(`INSERT INTO trainingPrograms (title, startDate, endDate, maxAttendees)
@@ -91,8 +94,8 @@ db.serialize(function () {
     db.run(`DROP TABLE IF EXISTS employeeTraining`)
     db.run(`CREATE TABLE IF NOT EXISTS employeeTraining (
         employeeTrainingId INTEGER PRIMARY KEY,
-        employeeId INT NOT NULL,
-        programId INT NOT NULL,
+        employeeId INTEGER NOT NULL,
+        programId INTEGER NOT NULL,
         FOREIGN KEY(employeeId) REFERENCES employees(employeeId))`
     )
     employeeTraining.forEach(({ employeeId, programId}) => {
@@ -140,9 +143,9 @@ db.serialize(function () {
     db.run(`CREATE TABLE IF NOT EXISTS products (
         productId INTEGER PRIMARY KEY,
         productTypeId INT NOT NULL,
-        price INT NOT NULL,
+        price INTEGER NOT NULL,
         title TEXT NOT NULL,
-        userId INT NOT NULL,
+        userId INTEGER NOT NULL,
         FOREIGN KEY(productTypeId) REFERENCES productTypes(productTypeId),
         FOREIGN KEY(userId) REFERENCES users(userId))`
     )

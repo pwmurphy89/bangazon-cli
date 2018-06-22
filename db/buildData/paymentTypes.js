@@ -10,7 +10,7 @@ module.exports.buildPaymentTypes = function(){
                 'max': numUsers
             }),
            type: faker.finance.accountName(),
-           accountNumber: faker.finance.account(),
+           accountNumber: faker.finance.account()
        })
     }
     return paymentTypes

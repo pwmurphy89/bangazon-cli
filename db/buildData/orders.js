@@ -5,7 +5,7 @@ module.exports.buildOrders = function(){
     let orders = [];
     for(let i=0;i<numOrders;i++){
        orders.push({
-           customerId: faker.random.number({
+           userId: faker.random.number({
                 'min': 1,
                 'max': numUsers
             }),
