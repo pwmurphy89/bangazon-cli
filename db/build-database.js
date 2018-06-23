@@ -37,7 +37,7 @@ db.serialize(function () {
 
     db.run(`DROP TABLE IF EXISTS departments`)
     db.run(`CREATE TABLE IF NOT EXISTS departments (
-        departmentId INTEGER PRIMARY KEY,
+        id INTEGER PRIMARY KEY,
         name TEXT NOT NULL,
         supervisor INTEGER NOT NULL,
         budget INTEGER NOT NULL)`
@@ -50,13 +50,13 @@ db.serialize(function () {
 
     db.run(`DROP TABLE IF EXISTS employees`)
     db.run(`CREATE TABLE IF NOT EXISTS employees (
-        employeeId INTEGER PRIMARY KEY,
+        id INTEGER PRIMARY KEY,
         departmentId INTEGER,
         firstName TEXT NOT NULL,
         lastName TEXT NOT NULL,
         password TEXT NOT NULL,
         FOREIGN KEY (departmentId)
-        REFERENCES departments(departmentId))`
+        REFERENCES departments(id))`
     )
     employees.forEach(({ departmentId, firstName, lastName, password }) => {
         db.run(`INSERT INTO employees (departmentId, firstName, lastName, password)
@@ -65,12 +65,12 @@ db.serialize(function () {
 
     db.run(`DROP TABLE IF EXISTS computers`)
     db.run(`CREATE TABLE IF NOT EXISTS computers (
-        computerId INTEGER PRIMARY KEY,
+        id INTEGER PRIMARY KEY,
         employeeId INTEGER,
         purchaseDate TEXT NOT NULL,
         decommissionDate TEXT NOT NULL,
         FOREIGN KEY (employeeId)
-        REFERENCES employees(employeeId)
+        REFERENCES employees(id)
         )`)
 
     computers.forEach(({ employeeId, purchaseDate, decommissionDate}) => {
@@ -93,10 +93,11 @@ db.serialize(function () {
 
     db.run(`DROP TABLE IF EXISTS employeeTraining`)
     db.run(`CREATE TABLE IF NOT EXISTS employeeTraining (
-        employeeTrainingId INTEGER PRIMARY KEY,
+        id INTEGER PRIMARY KEY,
         employeeId INTEGER NOT NULL,
         programId INTEGER NOT NULL,
-        FOREIGN KEY(employeeId) REFERENCES employees(employeeId))`
+        FOREIGN KEY(employeeId) REFERENCES employees(id),
+        FOREIGN KEY(programId) REFERENCES trainingPrograms(id))`
     )
     employeeTraining.forEach(({ employeeId, programId}) => {
         db.run(`INSERT INTO employeeTraining (employeeId, programId)
@@ -105,7 +106,7 @@ db.serialize(function () {
 
     db.run(`DROP TABLE IF EXISTS users`)
     db.run(`CREATE TABLE IF NOT EXISTS users (
-        userId INTEGER PRIMARY KEY,
+        id INTEGER PRIMARY KEY,
         firstName TEXT NOT NULL,
         lastName TEXT NOT NULL,
         accountDate TEXT NOT NULL,
@@ -118,11 +119,11 @@ db.serialize(function () {
 
     db.run(`DROP TABLE IF EXISTS paymentTypes`)
     db.run(`CREATE TABLE IF NOT EXISTS paymentTypes (
-        paymentTypeId INTEGER PRIMARY KEY,
+        id INTEGER PRIMARY KEY,
         userId INTEGER NOT NULL,
         type TEXT NOT NULL,
         accountNumber INTEGER NOT NULL,
-        FOREIGN KEY(userId) REFERENCES users(userId))`
+        FOREIGN KEY(userId) REFERENCES users(id))`
     )
     paymentTypes.forEach(({ userId, type, accountNumber}) => {
         db.run(`INSERT INTO paymentTypes (userId, type, accountNumber)
@@ -131,7 +132,7 @@ db.serialize(function () {
 
     db.run(`DROP TABLE IF EXISTS productTypes`)
     db.run(`CREATE TABLE IF NOT EXISTS productTypes (
-        productTypeId INTEGER PRIMARY KEY,
+        id INTEGER PRIMARY KEY,
         type TEXT NOT NULL)`
     )
     productTypes.forEach(({ type }) => {
@@ -141,13 +142,13 @@ db.serialize(function () {
 
     db.run(`DROP TABLE IF EXISTS products`)
     db.run(`CREATE TABLE IF NOT EXISTS products (
-        productId INTEGER PRIMARY KEY,
+        id INTEGER PRIMARY KEY,
         productTypeId INT NOT NULL,
         price INTEGER NOT NULL,
         title TEXT NOT NULL,
         userId INTEGER NOT NULL,
-        FOREIGN KEY(productTypeId) REFERENCES productTypes(productTypeId),
-        FOREIGN KEY(userId) REFERENCES users(userId))`
+        FOREIGN KEY(productTypeId) REFERENCES productTypes(id),
+        FOREIGN KEY(userId) REFERENCES users(id))`
     )
     products.forEach(({ productTypeId, price, title, userId}) => {
         db.run(`INSERT INTO products (productTypeId, price, title, userId)
@@ -156,14 +157,14 @@ db.serialize(function () {
 
     db.run(`DROP TABLE IF EXISTS orders`)
     db.run(`CREATE TABLE IF NOT EXISTS orders (
-        orderId INTEGER PRIMARY KEY,
+        id INTEGER PRIMARY KEY,
         userId INTEGER NOT NULL,
         productId INTEGER NOT NULL,
         orderDate TEXT NOT NULL,
         paymentTypeId INTEGER NOT NULL,
-        FOREIGN KEY(userId) REFERENCES users(userId),
-        FOREIGN KEY(productId) REFERENCES products(productId),
-        FOREIGN KEY(paymentTypeId) REFERENCES paymentTypes(paymentTypeId))`
+        FOREIGN KEY(userId) REFERENCES users(id),
+        FOREIGN KEY(productId) REFERENCES products(id),
+        FOREIGN KEY(paymentTypeId) REFERENCES paymentTypes(id))`
     )
     orders.forEach(({ userId, productId, orderDate, paymentTypeId}) => {
         db.run(`INSERT INTO orders (userId, productId, orderDate, paymentTypeId)

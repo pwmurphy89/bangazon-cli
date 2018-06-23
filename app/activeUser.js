@@ -10,8 +10,7 @@ let activeUser = {
 module.exports.setActiveUser = (user) => {
   activeUser.id = user.id,
   activeUser.firstName = user.firstName,
-  activeUser.lastName = user.lastName,
-  activeUser.accountDate = user.accountDate
+  activeUser.lastName = user.lastName
 }
 
 module.exports.getActiveUser = () => {

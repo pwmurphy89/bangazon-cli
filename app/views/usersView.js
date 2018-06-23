@@ -54,6 +54,9 @@ module.exports.userLoginView = function(){
                             }
                         )
                     })
+                    .catch( (error) => {
+                        console.log(error)
+                    })
                 }
             )
         })

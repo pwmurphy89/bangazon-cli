@@ -20,14 +20,7 @@ module.exports.getOneUser = (id) => {
       });
     });
 };
-module.exports.getOneUser = (id) => {
-  return new Promise((resolve, reject) => {
-    db.get(`SELECT * FROM users WHERE id = ${id}`, (err, user) => {
-      if (err) reject(err);
-      resolve(user);
-    });
-  });
-};
+
 module.exports.postUser = (user) => {
     return new Promise((resolve, reject) => {
         let {firstName, lastName, password, accountDate } = user
@@ -49,7 +42,7 @@ module.exports.putUser = (user, id) => {
         query += `"${key}" = "${user[key]}",`;
       });
       query = query.slice(0, -1);
-      query += ` WHERE id = ${id}`;
+      query += ` WHERE userId = ${id}`;
       db.run(query, function (err) {
         if (err) reject(err);
         resolve({ message: "updated user", rows_updated: this.changes });
