@@ -1,22 +1,16 @@
-'use strict';
-
 let activeUser = {
     id: 0,
     firstName: "",
-    lastName: "",
-    accountDate: ""
+    lastName: ""
 }
 
 module.exports.setActiveUser = (user) => {
+  console.log(user)
   activeUser.id = user.id,
   activeUser.firstName = user.firstName,
   activeUser.lastName = user.lastName
 }
 
 module.exports.getActiveUser = () => {
-  if(activeUser.id){
-    return activeUser;
-  }else{
-    return false;
-  }
+  return activeUser
 }

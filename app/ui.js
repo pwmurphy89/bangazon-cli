@@ -1,4 +1,3 @@
-'use strict';
 process.title = 'Bangazon CLI App';
 
 const {red, magenta, blue} = require("chalk");
@@ -9,6 +8,7 @@ const path = require('path');
 const { setActiveUser, getActiveUser } = require("./activeUser");
 const {userRegisterView, userLoginView} = require("./views/usersView")
 const {employeeLoginView} = require("./views/employeesView")
+const {displayProducts} =  require('./views/productsView')
 prompt.message = colors.blue("Bangazon Corp");
 
 
@@ -107,14 +107,7 @@ const welcomeMenuHandler = (error, userInput) => {
 const userMenuHandler = (error, userInput) => {
   switch(userInput.choice) {
     case "1":
-      // userLoginView()
-      // .then( (activeUser) => {
-      //   setActiveUser(activeUser);
-      //   userMenuMenu();
-      // })
-      // .catch( (error) => {
-      //   console.log(error)
-      // })
+      displayProducts()
       break;
     case "2":
       // registerUserView()

@@ -3,41 +3,46 @@ const path = require('path');
 const db = new sqlite3.Database(path.join(__dirname, '..', '..', 'bangazon.sqlite'));
 db.run('PRAGMA foreign_keys = ON');
 
-module.exports.getPaymentTypes = () => {
+module.exports.getUserPaymentTypes = (id) => {
+    return new Promise((resolve, reject) => {
+      db.all(`SELECT * FROM paymentTypes WHERE userId = ${id}`, (err, paymentTypes) => {
+        if (err) reject(err);
+        resolve(paymentTypes);
+      });
+    });
+};
+
+module.exports.getOnePaymentType = (id) => {
   return new Promise((resolve, reject) => {
-    db.all(`SELECT * FROM paymentTypes`, (err, paymentTypes) => {
+    db.get(`SELECT * FROM paymentTypes where id =${id}`, (err, paymentType) => {
       if (err) reject(err);
-      resolve(paymentTypes);
+      resolve(paymentType);
     });
   });
 };
 
-module.exports.getOnePaymentType = (id) => {
+module.exports.postPaymentType = (userId, type, accountNumber) => {
     return new Promise((resolve, reject) => {
-      db.get(`SELECT * FROM paymentTypes WHERE id = ${id}`, (err, paymentType) => {
-        if (err) reject(err);
-        resolve(paymentType);
-      });
-    });
-};
-module.exports.deleteOnePaymentType = (id) => {
-    return new Promise((resolve, reject) => {
-      db.run(`DELETE FROM paymentTypes WHERE id = ${id}`, (err) => {
-        if (err) reject(err);
-        resolve({message: "deleted paymentType"});
-      });
-    });
-};
-module.exports.postPaymentType = (paymentType) => {
-    return new Promise((resolve, reject) => {
-        let {customerId, type, accountNumber } = paymentType
-        db.run(`INSERT INTO paymentTypes (customerId, type, accountNumber) VALUES
-        (${customerId}, "${type}", ${accountNumber})`, (err) => {
+        db.run(`INSERT INTO paymentTypes (userId, type, accountNumber) VALUES
+        (${userId}, "${type}", ${accountNumber})`, (err) => {
             if (err) reject(err);
-            resolve({message: "added paymentType"});
+            db.get('SELECT * FROM paymentTypes WHERE id = last_insert_rowid()', (err, paymentType) => {
+              if (err) reject(err);
+              resolve(paymentType);
+            })
         });
     });
 };
+
+module.exports.deleteOnePaymentType = (id) => {
+  return new Promise((resolve, reject) => {
+    db.run(`DELETE FROM paymentTypes WHERE userId = ${id}`, (err) => {
+      if (err) reject(err);
+      resolve({message: "deleted paymentType"});
+    });
+  });
+};
+
 module.exports.putPaymentType = (paymentType, id) => {
     return new Promise((resolve, reject) => {
       let query = `UPDATE paymentTypes SET `;

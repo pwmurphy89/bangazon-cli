@@ -27,16 +27,20 @@ module.exports.deleteOneOrder = (id) => {
       });
     });
 };
-module.exports.postOrder = (order) => {
+
+module.exports.postOrder = (userId, productId, orderDate, paymentTypeId) => {
     return new Promise((resolve, reject) => {
-        let {customerId, productId, orderDate, paymentTypeId } = order
-        db.run(`INSERT INTO orders (customerId, productId, orderDate, paymentTypeId) VALUES
-        (${customerId}, ${productId}, "${orderDate}", ${paymentTypeId})`, (err) => {
+        db.run(`INSERT INTO orders (userId, productId, orderDate, paymentTypeId) VALUES
+        (${userId}, ${productId}, "${orderDate}", ${paymentTypeId})`, (err) => {
+          if (err) reject(err);
+          db.get('SELECT * FROM orders WHERE id = last_insert_rowid()', (err, order) => {
             if (err) reject(err);
-            resolve({message: "added order"});
+            resolve(order);
+          })
         });
     });
 };
+
 module.exports.putOrder = (order, id) => {
     return new Promise((resolve, reject) => {
       let query = `UPDATE orders SET `;
