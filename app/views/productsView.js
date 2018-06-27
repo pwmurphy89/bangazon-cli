@@ -1,12 +1,9 @@
 const {getProducts, getOneProduct } = require("../models/productsModel")
-const {postOrder} = require('../models/ordersModel')
 const { getActiveUser } = require("../activeUser");
 const {red, magenta, blue} = require("chalk");
 const {showPaymentTypes} = require("./paymentTypesView")
 const prompt = require('prompt');
 const activeUser = getActiveUser();
-// const { postUser, getUsers, getOneUser } = require('../models/usersModel')
-
 
 module.exports.displayProducts = function(){
     getProducts()
@@ -46,7 +43,7 @@ module.exports.displayProducts = function(){
                                 showPaymentTypes(product.id)
                                 break;
                                 case "2":
-                                module.exports.displayProducts();
+                                // module.exports.displayProducts();
                                 break;
                             }
                         }
@@ -55,10 +52,5 @@ module.exports.displayProducts = function(){
             }
         )
     })
-}
-
-
-const purchaseProduct = function(productId){
-    console.log("yeahhhhhh", productId)
 }
 

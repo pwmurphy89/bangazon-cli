@@ -11,6 +11,7 @@ const {employeeLoginView} = require("./views/employeesView")
 const {displayProducts} =  require('./views/productsView')
 prompt.message = colors.blue("Bangazon Corp");
 
+console.log("at ui", displayProducts)
 
 // app modules
 // const { promptNewUser } = require('./controllers/userCtrl')
@@ -32,7 +33,7 @@ const welcomeMenu = () => {
     }], welcomeMenuHandler );
 }
 
-const userMenu = () => {
+module.exports.userMenu = () => {
     const activeUser = getActiveUser();
     let headerDivider = `${magenta('*********************************************************')}`
     console.log(`
@@ -72,7 +73,7 @@ const welcomeMenuHandler = (error, userInput) => {
       userLoginView()
       .then( (activeUser) => {
         setActiveUser(activeUser);
-        userMenu();
+        module.exports.userMenu();
       })
       .catch( (error) => {
         console.log(error)
@@ -83,7 +84,7 @@ const welcomeMenuHandler = (error, userInput) => {
       userRegisterView()
       .then( (newUser) => {
         setActiveUser(newUser);
-        userMenu();
+        module.exports.userMenu();
       })
       .catch( (error) => {
         console.log(error)

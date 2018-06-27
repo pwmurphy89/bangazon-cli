@@ -1,20 +1,19 @@
 const {postOrder} = require('../models/ordersModel')
-const {getOneProduct} = require("../models/productsModel")
+const {getProducts, getOneProduct} = require("../models/productsModel")
 const {getOneUser} = require("../models/usersModel")
-const {userMenu} = require("../ui")
+// const {userMenu} = require("../ui")
 const {displayProducts} = require("./productsView")
 const { getActiveUser } = require("../activeUser");
-const {placeOrder} = require('./ordersView')
 const {red, magenta, blue} = require("chalk");
 const prompt = require('prompt');
 const activeUser = getActiveUser();
 
-// userId, productId, orderDate, paymentTypeId
+console.log("required", displayProducts)
+
 module.exports.placeOrder = function(paymentTypeId, productId){
     let date = new Date();
     postOrder(activeUser.id, productId, date, paymentTypeId)
     .then( (order) => {
-        // userId, productId, orderDate, paymentTypeId
         getOneProduct(productId)
         .then((product) => {
             getOneUser(product.userId)
