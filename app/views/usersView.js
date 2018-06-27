@@ -1,5 +1,6 @@
 // const promptNewUser = require('../controllers/userCtrl')
 const prompt = require('prompt');
+const ui = require("../ui")
 const { postUser, getUsers, getOneUser } = require('../models/usersModel')
 
 // Don't think I even need this command....
@@ -31,7 +32,6 @@ module.exports.userLoginView = function(){
                             }],
                             function(err, input) {
                                 if(input.password == user.password){
-                                    // console.log(`Welcome ${user.firstName}!`);
                                     resolve(user)
                                 }else{
                                     console.log(`Incorrect Password`)
@@ -43,10 +43,11 @@ module.exports.userLoginView = function(){
                                         }],
                                         function(err, input) {
                                             if(input.password2 == user.password){
-                                                // console.log(`Welcome ${user.firstName}!`);
                                                 resolve(user)
                                             }else{
-                                                console.log("Return to main menu, still need to write code for this")
+                                                console.log("Incorrect password, returning to main menu")
+                                                console.log(ui)
+                                                ui.welcomeMenu();
                                             }
                                         }
                                     )
@@ -86,35 +87,13 @@ module.exports.userRegisterView = function(){
             if (err) return reject(err);
             newUser.accountDate = new Date();
             postUser(newUser)
-            .then( (response) => {
-                resolve(response)
+            .then( (user) => {
+                resolve(user)
             })
             .catch( (error) => {
                 console.log(error)
               })
           }
     )
-})
+    })
 }
-
-
-// , function(err, results) {
-//     if (err) return reject(err);
-//     resolve(results);
-//   })
-// });
-    // .then( (userData) => {
-    //   userData.accountDate = new Date();
-    //   userModel(userData)
-    //   .then(
-    //     changing the view
-    //   )
-
-    //   console.log('customer data to save', userData );
-      //save customer to db
-//     })
-//     .catch(err => {
-//       console.log(err);
-//       module.exports.displayWelcome();
-//     });
-// }

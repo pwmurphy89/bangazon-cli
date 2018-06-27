@@ -11,6 +11,22 @@ module.exports.getProducts = () => {
     });
   });
 };
+module.exports.getProductsByUser = (id) => {
+  return new Promise((resolve, reject) => {
+    db.all(`SELECT * FROM products where userId = ${id}`, (err, products) => {
+      if (err) reject(err);
+      resolve(products);
+    });
+  });
+};
+module.exports.getProductByUserAndTitle = (id, title) => {
+  return new Promise((resolve, reject) => {
+    db.get(`SELECT * FROM products where userId = ${id} AND title = "${title}"`, (err, product) => {
+      if (err) reject(err);
+      resolve(product);
+    });
+  });
+};
 module.exports.getOneProduct = (id) => {
     return new Promise((resolve, reject) => {
       db.get(`SELECT * FROM products WHERE id = ${id}`, (err, product) => {
@@ -27,17 +43,20 @@ module.exports.deleteOneProduct = (id) => {
       });
     });
 };
-module.exports.postProduct = (product) => {
+module.exports.postProduct = (productTypeId, price, title, userId) => {
     return new Promise((resolve, reject) => {
-        let {productTypeId, price, title, description, userId} = product
-        db.run(`INSERT INTO products (productTypeId, price, title, description, userId) VALUES
-        (${productTypeId}, ${price}, "${description}", ${userId})`, (err) => {
+        db.run(`INSERT INTO products (productTypeId, price, title, userId) VALUES
+        (${productTypeId}, ${price}, "${title}", ${userId})`, (err) => {
             if (err) reject(err);
-            resolve({message: "added product"});
+            db.get('SELECT * FROM products WHERE id = last_insert_rowid()', (err, product) => {
+              if (err) reject(err);
+              resolve(product);
+            })
         });
     });
 };
-module.exports.putProduct = (product, id) => {
+
+module.exports.putProduct = (product) => {
     return new Promise((resolve, reject) => {
       let query = `UPDATE products SET `;
       let keys = (Object.keys(product));
@@ -45,10 +64,13 @@ module.exports.putProduct = (product, id) => {
         query += `"${key}" = "${product[key]}",`;
       });
       query = query.slice(0, -1);
-      query += ` WHERE id = ${id}`;
+      query += ` WHERE id = ${product.id}`;
       db.run(query, function (err) {
         if (err) reject(err);
-        resolve({ message: "updated product", rows_updated: this.changes });
+        db.get(`SELECT * FROM products WHERE id = ${product.id}`, (err, product) => {
+          if (err) reject(err);
+          resolve(product);
+        })
       });
     });
   };

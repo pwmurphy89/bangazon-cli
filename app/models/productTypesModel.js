@@ -19,6 +19,14 @@ module.exports.getOneProductType = (id) => {
       });
     });
 };
+module.exports.getProductTypeByName = (productType) => {
+  return new Promise((resolve, reject) => {
+    db.get(`SELECT * FROM productTypes WHERE type = "${productType}"`, (err, productType) => {
+      if (err) reject(err);
+      resolve(productType);
+    });
+  });
+};
 module.exports.deleteOneProductType = (id) => {
     return new Promise((resolve, reject) => {
       db.run(`DELETE FROM productTypes WHERE id = ${id}`, (err) => {

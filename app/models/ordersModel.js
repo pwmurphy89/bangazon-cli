@@ -3,9 +3,9 @@ const path = require('path');
 const db = new sqlite3.Database(path.join(__dirname, '..', '..', 'bangazon.sqlite'));
 db.run('PRAGMA foreign_keys = ON');
 
-module.exports.getOrders = () => {
+module.exports.getUserOrders = (id) => {
   return new Promise((resolve, reject) => {
-    db.all(`SELECT * FROM orders`, (err, orders) => {
+    db.all(`SELECT * FROM orders WHERE userId = ${id} ORDER BY orderDate`, (err, orders) => {
       if (err) reject(err);
       resolve(orders);
     });

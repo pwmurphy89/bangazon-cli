@@ -20,6 +20,15 @@ module.exports.getOneUser = (id) => {
       });
     });
 };
+module.exports.getUserByLastName = (lastName) => {
+
+  return new Promise((resolve, reject) => {
+    db.get(`SELECT * FROM users WHERE lastName = "${lastName}"`, (err, user) => {
+      if (err) reject(err);
+      resolve(user);
+    });
+  });
+};
 
 module.exports.postUser = (user) => {
     return new Promise((resolve, reject) => {

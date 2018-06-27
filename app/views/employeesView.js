@@ -1,7 +1,6 @@
 const prompt = require('prompt');
 const { postEmployee, getEmployees, getOneEmployee } = require('../models/employeesModel')
 
-
 module.exports.employeeLoginView = function(){
     return new Promise( (resolve, reject) => {
         getEmployees()

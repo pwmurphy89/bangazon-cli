@@ -8,17 +8,11 @@ const path = require('path');
 const { setActiveUser, getActiveUser } = require("./activeUser");
 const {userRegisterView, userLoginView} = require("./views/usersView")
 const {employeeLoginView} = require("./views/employeesView")
-const {displayProducts} =  require('./views/productsView')
+const {displayProducts, addProduct, viewProductsByUser} =  require('./views/productsView')
+const {viewOrders} = require('./views/ordersView')
 prompt.message = colors.blue("Bangazon Corp");
 
-console.log("at ui", displayProducts)
-
-// app modules
-// const { promptNewUser } = require('./controllers/userCtrl')
-//Don't think i need this command....
-// prompt.start();
-
-const welcomeMenu = () => {
+exports.welcomeMenu = () => {
     let headerDivider = `${magenta('*********************************************************')}`
       console.log(`
     ${headerDivider}
@@ -33,7 +27,7 @@ const welcomeMenu = () => {
     }], welcomeMenuHandler );
 }
 
-module.exports.userMenu = () => {
+exports.userMenu = () => {
     const activeUser = getActiveUser();
     let headerDivider = `${magenta('*********************************************************')}`
     console.log(`
@@ -43,7 +37,8 @@ module.exports.userMenu = () => {
     ${headerDivider}
     ${magenta('1.')} Browse Products
     ${magenta('2.')} View Orders
-    ${magenta('3.')} Add Product`)
+    ${magenta('3.')} View your listed products
+    ${magenta('4.')} Add Product`)
     prompt.get([{
       name: 'choice',
       description: 'Please make a selection'
@@ -73,22 +68,22 @@ const welcomeMenuHandler = (error, userInput) => {
       userLoginView()
       .then( (activeUser) => {
         setActiveUser(activeUser);
-        module.exports.userMenu();
+        exports.userMenu();
       })
       .catch( (error) => {
         console.log(error)
-        welcomeMenu();
+        exports.welcomeMenu();
       })
       break;
     case "2":
       userRegisterView()
       .then( (newUser) => {
         setActiveUser(newUser);
-        module.exports.userMenu();
+        exports.userMenu();
       })
       .catch( (error) => {
         console.log(error)
-        welcomeMenu();
+        exports.welcomeMenu();
       })
       break;
     case "3":
@@ -99,29 +94,30 @@ const welcomeMenuHandler = (error, userInput) => {
       })
       .catch( (error) => {
         console.log(error)
-        welcomeMenu();
+        exports.welcomeMenu();
       })
       break;
   }
 };
 
 const userMenuHandler = (error, userInput) => {
+  const activeUser = getActiveUser();
   switch(userInput.choice) {
     case "1":
       displayProducts()
       break;
     case "2":
-      // registerUserView()
-      // .then( (newUser) => {
-      //   setActiveUser(newUser);
-      //   displayMainMenu();
-      // })
-      // .catch( (error) => {
-      //   console.log(error)
-      // })
+      viewOrders(activeUser.id)
+      break;
+    case "3":
+      viewProductsByUser();
+      break;
+    case "4":
+      addProduct();
       break;
   }
 };
+
 
 const employeeMenuHandler = (error, userInput) => {
   switch(userInput.choice) {
@@ -148,4 +144,4 @@ const employeeMenuHandler = (error, userInput) => {
   }
 };
 
-welcomeMenu();
+exports.welcomeMenu();
