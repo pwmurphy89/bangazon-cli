@@ -5,12 +5,13 @@ db.run('PRAGMA foreign_keys = ON');
 
 module.exports.getUserOrders = (id) => {
   return new Promise((resolve, reject) => {
-    db.all(`SELECT * FROM orders WHERE userId = ${id} ORDER BY orderDate`, (err, orders) => {
+    db.all(`SELECT * FROM orders WHERE userId = ${id} ORDER BY date(orderDate)`, (err, orders) => {
       if (err) reject(err);
       resolve(orders);
     });
   });
 };
+
 module.exports.getOneOrder = (id) => {
     return new Promise((resolve, reject) => {
       db.get(`SELECT * FROM orders WHERE id = ${id}`, (err, order) => {

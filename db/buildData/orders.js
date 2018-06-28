@@ -13,7 +13,7 @@ module.exports.buildOrders = function(){
                 'min': 1,
                 'max': numProducts
             }),
-           orderDate: faker.date.past().toDateString(),
+           orderDate: faker.date.past(),
            paymentTypeId: faker.random.number({
                'min': 1,
                'max': numPaymentTypes

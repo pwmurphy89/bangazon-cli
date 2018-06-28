@@ -6,8 +6,8 @@ module.exports.buildComputers = function(){
     for(let i=0;i<numComputers;i++){
        computers.push({
            employeeId: i + 1,
-           purchaseDate: faker.date.past().toDateString(),
-           decommissionDate: faker.date.future().toDateString()
+           purchaseDate: faker.date.past(),
+           decommissionDate: faker.date.future()
        })
     }
     return computers

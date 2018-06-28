@@ -7,7 +7,7 @@ module.exports.buildUsers = function(){
        users.push({
            firstName: faker.name.firstName(),
            lastName: faker.name.lastName(),
-           accountDate: faker.date.past().toDateString(),
+           accountDate: faker.date.past(),
            password: "password"
        })
     }
