@@ -5,7 +5,7 @@ const db = new sqlite3.Database(path.join(__dirname, '..', '..', 'bangazon.sqlit
 
 module.exports.getTrainingPrograms = () => {
   return new Promise((resolve, reject) => {
-    db.all(`SELECT * FROM trainingPrograms JOIN employeeTraining ON trainingPrograms.id=employeeTraining.programId`, (err, trainingPrograms) => {
+    db.all(`SELECT * FROM trainingPrograms`, (err, trainingPrograms) => {
       if (err) reject(err);
       resolve(trainingPrograms);
     });
@@ -22,7 +22,7 @@ module.exports.getTrainingProgramsByEmployee = (id) => {
 };
 module.exports.getTrainingProgramInfo = (id) => {
   return new Promise((resolve, reject) => {
-    db.get(`SELECT * FROM trainingPrograms JOIN employeeTraining ON trainingPrograms.id=employeeTraining.programId AND employeeTraining.id = ${id}`, (err, trainingProgram) => {
+    db.get(`SELECT * FROM trainingPrograms WHERE id = ${id}`, (err, trainingProgram) => {
       if (err) reject(err);
       resolve(trainingProgram);
     });
