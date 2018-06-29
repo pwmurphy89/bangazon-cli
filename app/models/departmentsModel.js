@@ -20,6 +20,33 @@ module.exports.getOneDepartment = (id) => {
       });
     });
 };
+module.exports.getOneDepartmentByName = (name) => {
+  return new Promise((resolve, reject) => {
+    db.get(`SELECT * FROM departments WHERE name = "${name}"`, (err, department) => {
+      if (err) reject(err);
+      resolve(department);
+    });
+  });
+};
+
+module.exports.getEmployeeDepartment = (id) => {
+  return new Promise((resolve, reject) => {
+    db.get(`SELECT name FROM employees JOIN departments ON employees.departmentId=departments.id AND employees.id = ${id}
+    `, (err, department) => {
+      if (err) reject(err);
+      resolve(department);
+    });
+  });
+};
+module.exports.getDepartmentSupervisor = (departmentId) => {
+  return new Promise((resolve, reject) => {
+    db.get(`SELECT * FROM departments JOIN employees ON employees.id=departments.supervisor AND departments.id = ${departmentId}
+    `, (err, department) => {
+      if (err) reject(err);
+      resolve(department);
+    });
+  });
+};
 module.exports.deleteOneDepartment = (id) => {
     return new Promise((resolve, reject) => {
       db.run(`DELETE FROM departments WHERE id = ${id}`, (err) => {

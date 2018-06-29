@@ -1,5 +1,45 @@
 const prompt = require('prompt');
+const {red, magenta, blue} = require("chalk");
+const {getActiveUser} = require('../activeUser')
 const { postEmployee, getEmployees, getOneEmployee } = require('../models/employeesModel')
+const {viewDepartments} = require('./departmentsView')
+const {viewEmployeeComputer} = require("./computersView")
+const {viewEmployeeTrainingPrograms} = require("./employeeTrainingView")
+const ui = require('../ui')
+const activeUser = getActiveUser();
+
+
+
+exports.employeeMenu = () => {
+    const activeUser = getActiveUser();
+    let headerDivider = `${magenta('*********************************************************')}`
+    console.log(`
+    ${headerDivider}
+    ${magenta(`**  Welcome ${activeUser.firstName} ${activeUser.lastName}  **`)}
+    ${magenta(`**       Bangzon Employee        **`)}
+    ${headerDivider}
+    ${magenta('1.')} Department Information
+    ${magenta('2.')} Your Computer Information
+    ${magenta('3.')} Your Training Programs`)
+    prompt.get([{
+      name: 'choice',
+      description: 'Please make a selection'
+    }], exports.employeeMenuHandler );
+  }
+
+exports.employeeMenuHandler = (error, userInput) => {
+    switch(userInput.choice) {
+      case "1":
+        viewDepartments()
+        break;
+      case "2":
+        viewEmployeeComputer()
+        break;
+      case "3":
+        viewEmployeeTrainingPrograms();
+        break;
+    }
+};
 
 module.exports.employeeLoginView = function(){
     return new Promise( (resolve, reject) => {
@@ -27,7 +67,6 @@ module.exports.employeeLoginView = function(){
                             }],
                             function(err, input) {
                                 if(input.password == employee.password){
-                                    // console.log(`Welcome ${employee.firstName}!`);
                                     resolve(employee)
                                 }else{
                                     console.log(`Incorrect Password`)
@@ -39,10 +78,10 @@ module.exports.employeeLoginView = function(){
                                         }],
                                         function(err, input) {
                                             if(input.password2 == employee.password){
-                                                // console.log(`Welcome ${employee.firstName}!`);
                                                 resolve(employee)
                                             }else{
-                                                console.log("Return to main menu, still need to write code for this")
+                                                console.log("Incorrect password, returning to main menu")
+                                                ui.welcomeMenu();
                                             }
                                         }
                                     )

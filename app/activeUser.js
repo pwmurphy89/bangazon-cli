@@ -5,7 +5,6 @@ let activeUser = {
 }
 
 module.exports.setActiveUser = (user) => {
-  console.log(user)
   activeUser.id = user.id,
   activeUser.firstName = user.firstName,
   activeUser.lastName = user.lastName

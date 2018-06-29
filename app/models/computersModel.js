@@ -20,6 +20,15 @@ module.exports.getOneComputer = (id) => {
       });
     });
 };
+module.exports.getEmployeeComputer = (id) => {
+  return new Promise((resolve, reject) => {
+    db.get(`SELECT * FROM computers JOIN employees ON computers.employeeId=employees.id AND employees.id = ${id}`, (err, computer) => {
+      if (err) reject(err);
+      resolve(computer);
+    });
+  });
+};
+
 module.exports.deleteOneComputer = (id) => {
     return new Promise((resolve, reject) => {
       db.run(`DELETE FROM computers WHERE id = ${id}`, (err) => {

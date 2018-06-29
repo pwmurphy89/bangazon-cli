@@ -7,7 +7,7 @@ const path = require('path');
 
 const { setActiveUser, getActiveUser } = require("./activeUser");
 const {userRegisterView, userLoginView} = require("./views/usersView")
-const {employeeLoginView} = require("./views/employeesView")
+const {employeeMenuHandler, employeeLoginView} = require("./views/employeesView")
 const {displayProducts, addProduct, viewProductsByUser} =  require('./views/productsView')
 const {viewOrders} = require('./views/ordersView')
 prompt.message = colors.blue("Bangazon Corp");
@@ -114,32 +114,6 @@ const userMenuHandler = (error, userInput) => {
       break;
     case "4":
       addProduct();
-      break;
-  }
-};
-
-
-const employeeMenuHandler = (error, userInput) => {
-  switch(userInput.choice) {
-    case "1":
-      // userLoginView()
-      // .then( (activeUser) => {
-      //   setActiveUser(activeUser);
-      //   userMenuMenu();
-      // })
-      // .catch( (error) => {
-      //   console.log(error)
-      // })
-      break;
-    case "2":
-      // newUserView()
-      // .then( (newUser) => {
-      //   setActiveUser(newUser);
-      //   displayMainMenu();
-      // })
-      // .catch( (error) => {
-      //   console.log(error)
-      // })
       break;
   }
 };

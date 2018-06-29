@@ -1,5 +1,4 @@
 const { getUserPaymentTypes, postPaymentType, getOnePaymentType } = require("../models/paymentTypesModel")
-const {postOrder} = require('../models/ordersModel')
 const { getActiveUser } = require("../activeUser");
 const {placeOrder} = require('./ordersView')
 const {red, magenta, blue} = require("chalk");

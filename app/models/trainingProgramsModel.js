@@ -1,13 +1,30 @@
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 const db = new sqlite3.Database(path.join(__dirname, '..', '..', 'bangazon.sqlite'));
-db.run('PRAGMA foreign_keys = ON');
+// db.run('PRAGMA foreign_keys = ON');
 
 module.exports.getTrainingPrograms = () => {
   return new Promise((resolve, reject) => {
-    db.all(`SELECT * FROM trainingPrograms`, (err, trainingPrograms) => {
+    db.all(`SELECT * FROM trainingPrograms JOIN employeeTraining ON trainingPrograms.id=employeeTraining.programId`, (err, trainingPrograms) => {
       if (err) reject(err);
       resolve(trainingPrograms);
+    });
+  });
+};
+
+module.exports.getTrainingProgramsByEmployee = (id) => {
+  return new Promise((resolve, reject) => {
+    db.all(`SELECT * FROM trainingPrograms JOIN employeeTraining ON trainingPrograms.id=employeeTraining.programId AND employeeTraining.employeeId = ${id}`, (err, trainingPrograms) => {
+      if (err) reject(err);
+      resolve(trainingPrograms);
+    });
+  });
+};
+module.exports.getTrainingProgramInfo = (id) => {
+  return new Promise((resolve, reject) => {
+    db.get(`SELECT * FROM trainingPrograms JOIN employeeTraining ON trainingPrograms.id=employeeTraining.programId AND employeeTraining.id = ${id}`, (err, trainingProgram) => {
+      if (err) reject(err);
+      resolve(trainingProgram);
     });
   });
 };
@@ -38,6 +55,19 @@ module.exports.postTrainingProgram = (trainingProgram) => {
         });
     });
 };
+module.exports.postEmployeeTraining = (employeeId, programId) => {
+  return new Promise((resolve, reject) => {
+      db.run(`INSERT INTO employeeTraining (employeeId, programId) VALUES
+      (${employeeId}, ${programId} )`, (err) => {
+        if (err) reject(err);
+        db.get('SELECT * FROM trainingPrograms JOIN employeeTraining ON trainingPrograms.id=employeeTraining.programId AND employeeTraining.id = last_insert_rowid()', (err, trainingProgram) => {
+          if (err) reject(err);
+          resolve(trainingProgram);
+        })
+      });
+  });
+};
+
 module.exports.putTrainingProgram = (trainingProgram, id) => {
     return new Promise((resolve, reject) => {
       let query = `UPDATE trainingPrograms SET `;
