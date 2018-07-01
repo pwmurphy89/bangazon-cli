@@ -7,7 +7,7 @@ const path = require('path');
 
 const { setActiveUser, getActiveUser } = require("./activeUser");
 const {userRegisterView, userLoginView} = require("./views/usersView")
-const {employeeMenuHandler, employeeLoginView} = require("./views/employeesView")
+const {employeeMenu, employeeMenuHandler, employeeLoginView} = require("./views/employeesView")
 const {displayProducts, addProduct, viewProductsByUser} =  require('./views/productsView')
 const {viewOrders} = require('./views/ordersView')
 prompt.message = colors.blue("Bangazon Corp");
@@ -18,13 +18,23 @@ exports.welcomeMenu = () => {
     ${headerDivider}
     ${magenta('**          Welcome to Bangazon Marketplace!          **')}
     ${headerDivider}
-    ${magenta('1.')} Login
+    ${magenta('1.')} User Login
     ${magenta('2.')} Register Account
     ${magenta('3.')} Employee Login`)
     prompt.get([{
       name: 'choice',
       description: 'Please make a selection'
     }], welcomeMenuHandler );
+}
+
+exports.logOut = () => {
+  let user = {
+    id: 0,
+    firstName: "",
+    lastName: ""
+  }
+  setActiveUser(user);
+  exports.welcomeMenu();
 }
 
 exports.userMenu = () => {
@@ -38,28 +48,12 @@ exports.userMenu = () => {
     ${magenta('1.')} Browse Products
     ${magenta('2.')} View Orders
     ${magenta('3.')} View your listed products
-    ${magenta('4.')} Add Product`)
+    ${magenta('4.')} Add Product
+    ${magenta('5.')} Log Out`)
     prompt.get([{
       name: 'choice',
       description: 'Please make a selection'
     }], userMenuHandler );
-}
-
-const employeeMenu = () => {
-  const activeUser = getActiveUser();
-  let headerDivider = `${magenta('*********************************************************')}`
-  console.log(`
-  ${headerDivider}
-  ${magenta(`**  Welcome ${activeUser.firstName} ${activeUser.lastName}  **`)}
-  ${magenta(`**       Bangzon Employee        **`)}
-  ${headerDivider}
-  ${magenta('1.')} Department Information
-  ${magenta('2.')} Computer Information
-  ${magenta('3.')} Training Programs`)
-  prompt.get([{
-    name: 'choice',
-    description: 'Please make a selection'
-  }], employeeMenuHandler );
 }
 
 const welcomeMenuHandler = (error, userInput) => {
@@ -114,6 +108,9 @@ const userMenuHandler = (error, userInput) => {
       break;
     case "4":
       addProduct();
+      break;
+    case "5":
+      exports.logOut();
       break;
   }
 };

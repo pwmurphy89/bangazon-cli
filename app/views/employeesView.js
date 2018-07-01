@@ -20,7 +20,8 @@ exports.employeeMenu = () => {
     ${headerDivider}
     ${magenta('1.')} Department Information
     ${magenta('2.')} Your Computer Information
-    ${magenta('3.')} Your Training Programs`)
+    ${magenta('3.')} Your Training Programs
+    ${magenta('4.')} Log Out`)
     prompt.get([{
       name: 'choice',
       description: 'Please make a selection'
@@ -37,6 +38,9 @@ exports.employeeMenuHandler = (error, userInput) => {
         break;
       case "3":
         viewEmployeeTrainingPrograms();
+        break;
+      case "4":
+        ui.logOut();
         break;
     }
 };
