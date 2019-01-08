@@ -1,5 +1,13 @@
 # Bangazon
 
+
+1. Clone repo
+2. Install dependencies
+3. RUN SCRIPT: node db/build-database.js
+4. RUN SCRIPT: node bin/bangazon
+5. ctrl-C to exit program
+
+
 ## The Command Line Ordering System
 
 ## Ordering System Interface
@@ -7,21 +15,12 @@
 ### Main Menu
 
 ```bash
-*********************************************************
-**  Welcome to Bangazon! Command Line Ordering System  **
-*********************************************************
-1. Create a customer account
-2. Choose active customer
-3. Create a payment option
-4. Add product to sell
-5. Add product to shopping cart
-6. Complete an order
-7. Remove customer product
-8. Update product information
-9. Show stale products
-10. Show customer revenue report
-11. Show overall product popularity
-12. Leave Bangazon!
+    *********************************************************
+    **          Welcome to Bangazon Marketplace!          **
+    *********************************************************
+    1. User Login
+    2. Register Account
+    3. Employee Login
 >
 ```
 
