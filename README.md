@@ -22,7 +22,8 @@
     1. User Login
     2. Register Account
     3. Employee Login
-    
+   
+  *********************************************************
     
     Bangazon Corp: Please make a selection:  1
 1. Adalberto Hand
@@ -49,7 +50,7 @@ Bangazon Corp: Choose user:  1
 Hi Adalberto!
 Bangazon Corp: Please enter your password:  password
     
-    
+  *********************************************************
     
     *********************************************************
     **           Welcome Adalberto Hand           **
