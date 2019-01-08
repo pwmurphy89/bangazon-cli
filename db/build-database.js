@@ -1,13 +1,7 @@
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 const db = new sqlite3.Database(path.join(__dirname, '..', 'bangazon.sqlite'));
-//for some reason having this ruins everything
-//but i think i'll need it if when i start posting....
-// db.run('PRAGMA foreign_keys = ON');
 
-// const sqlite3 = require('sqlite3').verbose();
-// const path = require('path');
-// const db = new sqlite3.Database(path.join(__dirname,'bangazon.sqlite'));
 
 
 const {buildComputers} = require("./buildData/computers")
